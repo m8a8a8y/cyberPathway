@@ -1,7 +1,3 @@
-Here is an updated and professionally structured README for your **Cybersecurity Career Roadmap** project. This version includes enhanced clarity, better formatting, links section, and call-to-action for contributions:
-
----
-
 # 🛡️ Cybersecurity Career Roadmap
 
 An interactive, single-page HTML application providing a visual and structured career roadmap for cybersecurity professionals. This roadmap focuses on two major paths: **Penetration Testing (Pentesting)** and **Security Operations Center (SOC)** roles.
