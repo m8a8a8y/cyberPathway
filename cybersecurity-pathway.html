@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pentesting & SOC Roadmap</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --card-bg: white;
+            --card-shadow: rgba(0,0,0,0.1);
+            --resource-bg: #e8f4fc;
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --primary-color: #1e88e5;
+            --secondary-color: #bb86fc;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0,0,0,0.3);
+            --resource-bg: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            transition: all 0.3s ease;
+        }
+
+        .content-wrapper {
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(52, 152, 219, 0.2);
+            border: 2px dashed #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .theme-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle i {
+            margin-right: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tree-container {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .tree {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .branch {
+            position: relative;
+            margin-left: 250px;
+            padding-left: 30px;
+            border-left: 2px solid var(--primary-color);
+        }
+        
+        .branch:before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            transform: translateX(-50%);
+        }
+        
+        .leaf {
+            position: relative;
+            padding: 15px;
+            margin: 10px 0;
+            background: var(--card-bg);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .leaf:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+        
+        .leaf-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .leaf-content {
+            display: none;
+            padding: 10px;
+            background: var(--resource-bg);
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .leaf.active .leaf-content {
+            display: block;
+        }
+        
+        .resource {
+            margin: 10px 0;
+            padding: 8px;
+            background: var(--resource-bg);
+            border-radius: 3px;
+        }
+        
+        .resource.free {
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .resource.paid {
+            border-left: 3px solid #e74c3c;
+        }
+        
+        .resource-title {
+            font-weight: bold;
+        }
+        
+        .tree-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        
+        .tree-toggle:hover {
+            background: var(--secondary-color);
+        }
+        
+        .path-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .path-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .path-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .path-btn.active {
+            background: var(--secondary-color);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .branch {
+                margin-left: 50px;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .theme-toggle {
+                margin-top: 15px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="header-container">
+            <div class="logo-container">
+                <div class="logo-placeholder"></div>
+                <h1>Cybersecurity Career Roadmap</h1>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i> Dark Mode
+            </button>
+        </div>
+        
+        <div class="path-selector">
+            <button class="path-btn active" onclick="showPath('pentesting')">Pentesting Path</button>
+            <button class="path-btn" onclick="showPath('soc')">SOC Path</button>
+        </div>
+        
+        <div class="tree-container">
+            <div class="tree">
+                <!-- Pentesting Path -->
+                <div id="pentesting-path">
+                    <div class="branch">
+                        <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">1. Networking Fundamentals</div>
+                            <div class="leaf-content">
+                                <p>Understanding networking protocols, TCP/IP stack, OSI model, subnetting, etc.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.youtube.com/playlist?list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8" target="_blank">Computer Networking Course on YouTube by Network Direction</a></li>
+                                        <li><a href="https://youtube.com/playlist?list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&si=HvIITWrkbxCM8t6P" target="_blank">CCNA preperation - jermy IT lab </a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://courses.davidbombal.com/p/cisco-ccna-200-301-pass-with-gns3" target="_blank">Cisco CCNA with david bombal</a></li>
+                                        <li><a href="https://www.udemy.com/course/comptia-network-009/?couponCode=ST21MT30625G2" target="_blank">Network+ by CompTIA on Udemy</a></li>
+                                        <li><a href="https://www.udemy.com/course/complete-networking-fundamentals-course-ccna-start/?couponCode=ST21MT30625G2" target="_blank">Practical Networking course on Udemy Davidbombal</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">2. Operating Systems</div>
+                            <div class="leaf-content">
+                                <p>Deep understanding of Linux and Windows systems, command line, file systems, etc.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://youtube.com/playlist?list=PLroS9tRyoUGoGEGSdF4VH7hK39LLwZhX7&si=9yx-ldx5yI9GvlIj" target="_blank">Linux from Technawi </a></li>
+                                        <li><a href="https://tryhackme.com/module/windows-fundamentals" target="_blank">windows fundamentals - TryHackMe</a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.udemy.com/course/linux-administration-bootcamp/" target="_blank">Linux Administration Bootcamp on Udemy</a></li>
+                                        <li><a href="https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189" target="_blank">Windows Internals book by Pavel Yosifovich</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">3. Programming & Scripting</div>
+                            <div class="leaf-content">
+                                <p>Learn Python, Bash, PowerShell for automation and tool development.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://automatetheboringstuff.com/" target="_blank">Automate the Boring Stuff with Python </a></li>
+                                        <li><a href="https://www.codecademy.com/learn/learn-python" target="_blank">Codecademy Python course </a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.udemy.com/course/complete-python-bootcamp/" target="_blank">Complete Python Bootcamp on Udemy</a></li>
+                                        <li><a href="https://www.amazon.com/Black-Hat-Python-Programming-Pentesters/dp/1593275900" target="_blank">Black Hat Python book</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="branch">
+                            <div class="leaf" onclick="toggleLeaf(this)">
+                                <div class="leaf-title">4. Web Application Security</div>
+                                <div class="leaf-content">
+                                    <p>Learn about OWASP Top 10, web protocols, and common vulnerabilities.</p>
+                                    <div class="resource free">
+                                        <div class="resource-title">Free Resources:</div>
+                                        <ul>
+                                            <li><a href="https://youtube.com/playlist?list=PLBbacta63jciTygwsow0qBxzqBS8WhEHB&si=VyC0aHbRUxD6We0c" target="_blank"> Web Security Testing - Khaled Ibn al-Waled </a></li>
+                                            <li><a href="https://portswigger.net/web-security" target="_blank">PortSwigger Web Security Academy</a></li>
+                                            <li><a href="https://youtube.com/playlist?list=PLroS9tRyoUGpAJPAgygxEP9imIZpkxFMi&si=9oVhEHq57IozveGk" target="_blank"> Web Security from Technawi</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="resource paid">
+                                        <div class="resource-title">Paid Resources:</div>
+                                        <ul>
+                                            <li><a href="https://www.udemy.com/course/web-application-security-for-absolute-beginners-no-coding/?srsltid=AfmBOoqOdn9A7M6D486KuJxBnoyXpgIQ2kF5kaWbQm8-zGhgQeAQ-kJD&utm_source=chatgpt.com&couponCode=ST21MT30625G2" target="_blank">OWASP top 10 Web Application Security for Absolute Beginners- Udemy</a></li>
+                                            <li><a href="https://www.udemy.com/course/web-and-servers-penetration-testing-arabic/?couponCode=ST21MT30625G2" target="_blank">Web and servers penetration testing - Udemy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaf" onclick="toggleLeaf(this)">
+                                <div class="leaf-title">5. Network Penetration Testing</div>
+                                <div class="leaf-content">
+                                    <p>Learn about network vulnerabilities, exploitation, and post-exploitation.</p>
+                                    <div class="resource free">
+                                        <div class="resource-title">Free Resources:</div>
+                                        <ul>
+                                            <li><a href="https://youtube.com/playlist?list=PL_yseowcuqYJc7wXtGIsshYp1B_W0M-ZK&si=QGuf1IRxoZ1Siw_7" target="_blank">OSCP preperation course</a></li>
+                                            <li><a href="https://youtube.com/playlist?list=PLBf0hzazHTGOepimcP15eS6Y-aR4m6ql3&si=_jYPH-zHO24AzTIh" target="_blank">Penetration Testing Bootcamp - HackerSploit</a></li>
+                                            <li><a href="https://www.offensive-security.com/metasploit-unleashed/" target="_blank">Metasploit Unleashed free course</a></li>
+                                            <li><a href="https://netriders.academy/all-courses/penetration-testing-student/lesson/%d8%a7%d9%84%d9%81%d9%8a%d8%af%d9%8a%d9%88%d9%87%d8%a7%d8%aa-%d8%a7%d9%84%d8%b3%d9%84%d8%a7%d9%8a%d8%af%d8%a7%d8%aa-%d8%a7%d9%84%d9%84%d8%a7%d8%a8%d8%a7%d8%aa/" target="_blank">ejppt preperation  - netriders </a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="resource paid">
+                                        <div class="resource-title">Paid Resources:</div>
+                                        <ul>
+                                            <li><a href="https://www.offensive-security.com/pwk-oscp/" target="_blank">Offensive Security Certified Professional - OSCP</a></li>
+                                            <li><a href="https://certifications.tcm-sec.com/pnpt/" target="_blank">Practical Network Penetration Tester (PNPT) - TCM security </a></li>
+                                            <li><a href="https://my.ine.com/CyberSecurity/learning-paths/61f88d91-79ff-4d8f-af68-873883dbbd8c/penetration-testing-student" target="_blank">INE Penetration Testing Student path - ejpt</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch">
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                    <div class="leaf-title">6. Advanced Exploitation</div>
+                                    <div class="leaf-content">
+                                        <p>Learn advanced exploitation techniques, binary analysis, and custom exploit development.</p>
+                                        <div class="resource free">
+                                            <div class="resource-title">Free Resources:</div>
+                                            <ul>
+                                                <li><a href="https://github.com/RPISEC/MBE" target="_blank">RPISEC/MBE: Modern Binary Exploitation course</a></li>
+                                                <li><a href="https://www.cybrary.it/video/exploit-development-introduction-part-1" target="_blank">Exploit Development Introduction </a></li>
+                                                <li><a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/" target="_blank">Corelan Exploit Writing Tutorials</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="resource paid">
+                                            <div class="resource-title">Paid Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.offsec.com/learning/paths/exploit-development-essentials/" target="_blank">Offensive Security Exploit Developer (OSED)</a></li>
+                                                <li><a href="https://www.sans.org/cyber-security-courses/advanced-exploit-development-penetration-testers/" target="_blank">SANS SEC760: Advanced Exploit Development</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                    <div class="leaf-title">7. Active Directory Attacks</div>
+                                    <div class="leaf-content">
+                                        <p>Learn about AD security, common attack vectors, and privilege escalation.</p>
+                                        <div class="resource free">
+                                            <div class="resource-title">Free Resources:</div>
+                                            <ul>
+                                                <li><a href="https://youtu.be/VXxH4n684HE?si=lAQl0UN0tJhaV_u5" target="_blank">Active Directory Attacks - TCM security </a></li>
+                                                <li><a href="https://youtu.be/ilzQpUWN-MA?si=fiYCsep8ppnDpRpN" target="_blank">Active Directory Attack Foundation</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="resource paid">
+                                            <div class="resource-title">Paid Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.offsec.com/blog/osce3-certification/" target="_blank">Offensive Security Certified Expert (OSCE3)</a></li>
+                                                <li><a href="https://www.sans.org/cyber-security-courses/hacker-techniques-incident-handling/" target="_blank">SANS SEC504: Hacker Tools, Techniques</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                <div class="leaf-title">8. Mobile / Advanced pentesting </div>
+                                    <div class="leaf-content">
+                                     <p>Specialize in mobile app testing, cloud security, or IoT security.</p>
+            
+                                        <div class="resource paid">
+                                      <div class="resource-title">Paid Resources:</div>
+                                     <ul>
+                                           <li><a href="https://www.offensive-security.com/awae-oswe/" target="_blank">Offensive Security Web Expert (OSWE)</a></li>
+                                           <li><a href="https://elearnsecurity.com/product/emapt-certification/" target="_blank">eLearnSecurity Mobile Penetration Tester (eMAPT)</a></li>
+                                     </ul>
+                                   </div>
+                                 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SOC Path -->
+                <div id="soc-path" class="hidden">
+                    <div class="branch">
+                        <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">1. Networking Fundamentals</div>
+                            <div class="leaf-content">
+                                <p>Understanding networking protocols, TCP/IP stack, OSI model, subnetting, etc.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.youtube.com/playlist?list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8" target="_blank">Computer Networking Course on YouTube by Network Direction</a></li>
+                                        <li><a href="https://youtube.com/playlist?list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ&si=HvIITWrkbxCM8t6P" target="_blank">CCNA jermy IT lab </a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://courses.davidbombal.com/p/cisco-ccna-200-301-pass-with-gns3" target="_blank">Cisco CCNA with david bombal</a></li>
+                                        <li><a href="https://www.udemy.com/course/comptia-network-009/?couponCode=ST21MT30625G2" target="_blank">Network+ by CompTIA on udemy</a></li>
+                                        <li><a href="https://www.udemy.com/course/complete-networking-fundamentals-course-ccna-start/?couponCode=ST21MT30625G2" target="_blank">Practical Networking course on Udemy david bombal</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">2. Operating Systems</div>
+                            <div class="leaf-content">
+                                <p>Deep understanding of Linux and Windows systems, command line, file systems, etc.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://youtube.com/playlist?list=PLroS9tRyoUGoGEGSdF4VH7hK39LLwZhX7&si=9yx-ldx5yI9GvlIj" target="_blank">Linux from technawi </a></li>
+                                        <li><a href="https://tryhackme.com/module/windows-fundamentals" target="_blank">windows fundamentals</a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.udemy.com/course/linux-administration-bootcamp/" target="_blank">Linux Administration Bootcamp on Udemy</a></li>
+                                        <li><a href="https://www.amazon.com/Windows-Internals-Part-architecture-management/dp/0735684189" target="_blank">Windows Internals book by Pavel Yosifovich</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="leaf" onclick="toggleLeaf(this)">
+                            <div class="leaf-title">3. SIEM Fundamentals</div>
+                            <div class="leaf-content">
+                                <p>Learn about Security Information and Event Management systems.</p>
+                                <div class="resource free">
+                                    <div class="resource-title">Free Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.cybrary.it/course/introduction-to-siem-tools?utm_source=chatgpt.com" target="_blank">Introduction to SIEM Tools - cybrary</a></li>
+                                        <li><a href="https://www.elastic.co/training/elastic-security-for-siem" target="_blank">Elastic Security for SIEM</a></li>
+                                        <li><a href="https://www.splunk.com/en_us/training/splunk-fundamentals.html" target="_blank">splunk fundamentals</a></li>
+                                    </ul>
+                                </div>
+                                <div class="resource paid">
+                                    <div class="resource-title">Paid Resources:</div>
+                                    <ul>
+                                        <li><a href="https://www.udemy.com/share/105zwU3@ZNzOQOI2qL3azflNIcgQKHq4XzPJUQCGhZ_elyH0PwlbySR466YQFv_Uwz_c7bYgTw==/" target="_blank">Cyber Security SOC Analyst Training - SIEM (Splunk) udemy </a></li>
+                                        <li><a href="https://tryhackme.com/module/security-information-event-management" target="_blank">SIEM TryHackMe</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="branch">
+                            <div class="leaf" onclick="toggleLeaf(this)">
+                                <div class="leaf-title">4. Threat Detection & Analysis</div>
+                                <div class="leaf-content">
+                                    <p>Learn about common attack patterns and how to detect them.</p>
+                                    <div class="resource free">
+                                        <div class="resource-title">Free Resources:</div>
+                                        <ul>
+                                            <li><a href="https://www.securityblue.team/courses/blue-team-junior-analyst-pathway-bundle" target="_blank">Blue Team Junior Analyst - SecurityBlueTeam </a></li>
+                                            <li><a href="https://academy.theartofservice.com/enrol/index.php?id=1610" target="_blank">Threat Detection and Mitigation</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="resource paid">
+                                        <div class="resource-title">Paid Resources:</div>
+                                        <ul>
+                                            <li><a href="https://www.sans.org/cyber-security-courses/cybersecurity-engineering-advanced-threat-detection-monitoring/" target="_blank">SANS SEC511: Continuous Monitoring</a></li>
+                                            <li><a href="https://www.securityblue.team/certifications/blue-team-level-1" target="_blank">Blue Team Level 1 (BTL1) certification</a></li>
+                                            <li><a href="https://academy.tcm-sec.com/p/detection-engineering-for-beginners" target="_blank">Detection Engineering for Beginners TCM security</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaf" onclick="toggleLeaf(this)">
+                                <div class="leaf-title">5. Incident Response</div>
+                                <div class="leaf-content">
+                                    <p>Learn the incident response lifecycle and procedures.</p>
+                                    <div class="resource free">
+                                        <div class="resource-title">Free Resources:</div>
+                                        <ul>
+                                            <li><a href="https://netriders.academy/all-courses/incident-response/" target="_blank">eCIR Prep netriders</a></li>
+                                            <li><a href="https://www.cybrary.it/course/incident-response-lifecycle" target="_blank"> Incident Response </a></li>
+                                            <li><a href="Digital Forensics and Incident Response" target="_blank">TryHackMe Incident Response</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="resource paid">
+                                        <div class="resource-title">Paid Resources:</div>
+                                        <ul>
+                                            <li><a href="https://www.sans.org/cyber-security-courses/hacker-techniques-incident-handling/" target="_blank">Certified Incident Handler (GCIH)</a></li>
+                                            <li><a href="https://www.udemy.com/course/incident-response-s/?srsltid=AfmBOop0WLFIRtoL1z_oaROt2s4yeHOQzXFWcuQs4B0nQY5VAPvHGvwq" target="_blank">udemy Incident Response</a></li>
+                                            <li><a href="https://elearnsecurity.com/product/ecir-certification/" target="_blank">eLearnSecurity Certified Incident Responder (eCIR)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch">
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                    <div class="leaf-title">6. Threat Hunting</div>
+                                    <div class="leaf-content">
+                                        <p>Proactively search for threats in the environment.</p>
+                                        <div class="resource free">
+                                            <div class="resource-title">Free Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.securityblue.team/courses/introduction-to-threat-hunting" target="_blank">Introduction to Threat Hunting - SecurityBlueTeam </a></li>
+                                                <li><a href="https://academy.picussecurity.com/course/foundations-of-threat-hunting-training-free-course-certification" target="_blank"> Foundations of Threat Hunting</a></li>
+                                                <li><a href="https://www.activecountermeasures.com/hunt-training/" target="_blank"> Threat Hunting 101 - active counter measures</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="resource paid">
+                                            <div class="resource-title">Paid Resources:</div>
+                                            <ul>
+                                                <li><a href="https://codered.eccouncil.org/course/applied-threat-hunting" target="_blank">Applied Threat Hunting - eccouncil</a></li>
+                                                <li><a href="https://tryhackme.com/module/threat-hunting" target="_blank"> Threat Hunting - TryHackMe</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                    <div class="leaf-title">7. Malware Analysis</div>
+                                    <div class="leaf-content">
+                                        <p>Learn static and dynamic malware analysis techniques.</p>
+                                        <div class="resource free">
+                                            <div class="resource-title">Free Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.youtube.com/watch?v=qA0YcYMRWyI&t=6124s" target="_blank">Practical Malware Analysis - tcm-sec</a></li>
+                                                <li><a href="https://www.cybrary.it/practice-lab/malware-analysis-basics" target="_blank">Malware Analysis Basics - cybrary</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="resource paid">
+                                            <div class="resource-title">Paid Resources:</div>
+                                            <ul>
+                                                <li><a href="https://academy.tcm-sec.com/p/practical-malware-analysis-triage/?affcode=770707_llmpidil" target="_blank">Practical Malware Analysis & Triage - tcm-sec </a></li>
+                                                <li><a href="https://www.udemy.com/course/practical-malware-analysis-for-beginners/?srsltid=AfmBOoqWteY7M2lJCL-eu3GZx7uLtW0c72qk6QLUU3AfYS1BeZvYCDjV" target="_blank">Practical Malware Analysis for Beginners - udemy </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leaf" onclick="toggleLeaf(this)">
+                                    <div class="leaf-title">8. Cloud Security Monitoring</div>
+                                    <div class="leaf-content">
+                                        <p>Learn to monitor AWS, Azure, or GCP environments.</p>
+                                        <div class="resource free">
+                                            <div class="resource-title">Free Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.cloudskillsboost.google/paths/419" target="_blank">Beginner: Google Cloud Cybersecurity Certificate</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="resource paid">
+                                            <div class="resource-title">Paid Resources:</div>
+                                            <ul>
+                                                <li><a href="https://www.isc2.org/Certifications/CCSP" target="_blank">Certified Cloud Security Professional (CCSP)</a></li>
+                                                <li><a href="https://www.udemy.com/course/cloud-security-with-aws-and-microsoft-azure/?srsltid=AfmBOooGP7e9w47dYAsC4uHEI4t1qpxwl_-xJRT00ySforPIt3wHBhoe&utm_source=chatgpt.com&couponCode=PMNVD3025" target="_blank">Cloud Security with AWS and Microsoft Azure</a></li>
+                                                <li><a href="https://cloud.google.com/learn/certification/cloud-security-engineer" target="_blank">Professional Cloud Security Engineer</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLeaf(leaf) {
+            leaf.classList.toggle('active');
+        }
+        
+        function showPath(path) {
+            document.getElementById('pentesting-path').classList.add('hidden');
+            document.getElementById('soc-path').classList.add('hidden');
+            document.getElementById(path + '-path').classList.remove('hidden');
+            document.querySelectorAll('.path-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+            }
+        }
+    </script>
+</body>
+</html>

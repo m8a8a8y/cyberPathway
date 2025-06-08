@@ -1,0 +1,57 @@
+# Cybersecurity Career Roadmap
+
+## Overview
+This HTML file provides an interactive roadmap for cybersecurity career paths, specifically focusing on Penetration Testing (Pentesting) and Security Operations Center (SOC) roles. The roadmap is presented as an expandable tree structure with learning resources for each step of the career path.
+
+## Features
+- **Dual Career Paths**: Toggle between Pentesting and SOC roadmaps
+- **Interactive Learning Modules**: Click on each topic to reveal detailed resources
+- **Resource Categorization**: Free and paid resources are clearly marked
+- **Dark/Light Mode**: Toggle between color themes for better viewing
+- **Responsive Design**: Works on both desktop and mobile devices
+
+## How to Use
+1. Open the HTML file in any modern web browser
+2. Select your desired career path using the buttons at the top:
+   - "Pentesting Path" for offensive security roles
+   - "SOC Path" for defensive/blue team roles
+3. Click on any topic to expand it and view learning resources
+4. Toggle between dark and light mode using the button in the header
+
+## Roadmap Structure
+
+### Pentesting Path
+1. Networking Fundamentals
+2. Operating Systems
+3. Programming & Scripting
+4. Web Application Security
+5. Network Penetration Testing
+6. Advanced Exploitation
+7. Active Directory Attacks
+8. Mobile/Advanced Pentesting
+
+### SOC Path
+1. Networking Fundamentals
+2. Operating Systems
+3. SIEM Fundamentals
+4. Threat Detection & Analysis
+5. Incident Response
+6. Threat Hunting
+7. Malware Analysis
+8. Cloud Security Monitoring
+
+## Technical Details
+- Built with pure HTML, CSS, and JavaScript
+- Responsive design using CSS media queries
+- No external dependencies except Font Awesome for icons
+- Lightweight (single HTML file)
+
+## Customization
+You can easily modify this file to:
+- Add more career paths
+- Update resources
+- Change color schemes by editing the CSS variables
+- Add your organization's logo
+
+
+
