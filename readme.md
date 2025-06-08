@@ -86,13 +86,5 @@ Here are a few trusted learning platforms referenced within the roadmap:
 
 ---
 
-## 🤝 Contributing
 
-Feel free to fork this project and submit improvements:
-
-* Add missing resources or certifications
-* Suggest roadmap updates for new fields (e.g., Cloud Security, OT Security)
-* Fix bugs or improve UI/UX
-
----
 
